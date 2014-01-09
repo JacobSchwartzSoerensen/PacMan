@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 public class GameEngine {
 	
 	private JFrame window;
-	private JPanel GfxEngine;
+	private GraphicsEngine GfxEngine;
 	
 	public GameEngine(JFrame frame){
 		
@@ -15,6 +15,14 @@ public class GameEngine {
 		
 		window.add(GfxEngine);
 		
+		startMenu();
+		
+	}
+	
+	public void startMenu(){
+		
+		GfxEngine.changePanel(new Menu(this));
+		GfxEngine.repaint();
 		
 	}
 	

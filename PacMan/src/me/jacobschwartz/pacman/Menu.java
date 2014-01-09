@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class Menu extends JPanel{
@@ -14,6 +15,8 @@ public class Menu extends JPanel{
 	private Color bgColor = new Color(0,0,0);
 	private Font nameFont = new Font("Verdana", Font.BOLD, 80);
 	private Color nameColor = new Color(255,255,255);
+	
+	private JButton b_startGame = new JButton();
 	
 	public Menu(GameEngine engine){
 		

@@ -15,7 +15,12 @@ public class GraphicsEngine extends JPanel{
 	public GraphicsEngine(GameEngine engine){
 		
 		gameEngine = engine;
-		currentPanel = new Menu(gameEngine);
+		
+	}
+	
+	public void changePanel(JPanel panel){
+		
+		currentPanel = panel;
 		
 	}
 	
@@ -25,7 +30,9 @@ public class GraphicsEngine extends JPanel{
 		
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		currentPanel.paint(g);
+		if(currentPanel != null){
+			currentPanel.paint(g);
+		}
 		
 	}
 
