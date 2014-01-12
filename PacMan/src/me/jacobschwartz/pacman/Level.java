@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -14,7 +16,11 @@ public class Level extends JPanel{
 	private GameEngine gameEngine;
 	private LevelKeyListener keyListener;
 	
-	private List 
+	private List<Collideable> collisionList = new ArrayList<Collideable>();
+	private List<Paintable> paintList = new ArrayList<Paintable>();
+	
+	private int points = 0;
+	public void addPoints(int points){ this.points += points; }
 	
 	//0 = empty
 	//1 = wall
@@ -72,7 +78,21 @@ public class Level extends JPanel{
 	
 	public void buildBoard(){
 		
+		Wall wall;
 		
+		for(int i = 0; i < levelData.length; i++){
+			
+			switch(levelData[i]){
+				case 1:
+					wall = new Wall(i-((i/21)*21),i/21);
+					collisionList.add(wall);
+					paintList.add(wall);
+					break;
+				case 2:
+					
+			}
+			
+		}
 		
 	}
 	
@@ -91,6 +111,12 @@ public class Level extends JPanel{
 		
 		g2d.setColor(Color.black);
 		g2d.fillRect(0, 0, 800, 600);
+		
+		for(int i = 0; i < paintList.size(); i++){
+			
+			paintList.get(i).paint(g2d);
+			
+		}
 		
 		
 	}
