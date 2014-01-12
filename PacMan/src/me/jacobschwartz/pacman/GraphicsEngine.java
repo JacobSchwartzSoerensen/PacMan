@@ -15,6 +15,8 @@ public class GraphicsEngine extends JPanel{
 	private JFrame window;
 	private GameEngine gameEngine;
 	
+	public void setWindowTitle(String title){ window.setTitle(title);}
+	
 	public GraphicsEngine(GameEngine engine){
 		
 		gameEngine = engine;
@@ -40,6 +42,7 @@ public class GraphicsEngine extends JPanel{
 		this.removeAll();
 		panel.setBounds(0, 0, 800, 600);
 		this.add(panel);
+		panel.requestFocusInWindow();
 		repaint();
 		
 	}

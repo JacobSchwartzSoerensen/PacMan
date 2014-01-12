@@ -20,10 +20,13 @@ public class Menu extends JPanel{
 	
 	private JButton b_startGame;
 	private JButton b_endGame;
+	private MenuActions menuActions;
 	
 	public Menu(GameEngine engine){
 		
 		gameEngine = engine;
+		
+		menuActions = new MenuActions(gameEngine);
 		
 		setLayout(null);
 		this.setPreferredSize(new Dimension(800, 600));
@@ -31,13 +34,13 @@ public class Menu extends JPanel{
 		b_startGame = new JButton("Start Game");
 		b_startGame.setBounds(500, 200, 100, 25);
 		b_startGame.setActionCommand("start");
-		b_startGame.addActionListener(new MenuActions(gameEngine));
+		b_startGame.addActionListener(menuActions);
 		add(b_startGame);
 		
 		b_endGame = new JButton("Quit Game");
 		b_endGame.setBounds(500, 250, 100, 25);
 		b_endGame.setActionCommand("end");
-		b_endGame.addActionListener(new MenuActions(gameEngine));
+		b_endGame.addActionListener(menuActions);
 		add(b_endGame);
 		
 		setBackground(bgColor);

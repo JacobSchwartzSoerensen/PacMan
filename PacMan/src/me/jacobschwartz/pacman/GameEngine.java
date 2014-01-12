@@ -1,12 +1,15 @@
 package me.jacobschwartz.pacman;
 
-public class GameEngine {
+public class GameEngine implements Runnable{
 	
-	private GraphicsEngine GfxEngine;
+	private GraphicsEngine gfxEngine;
+	private Level level;
+	private Thread renderThread;
+	private boolean renderThreadRunning = false;
 	
 	public GameEngine(){
 		
-		GfxEngine = new GraphicsEngine(this);
+		gfxEngine = new GraphicsEngine(this);
 		
 		startMenu();
 		
@@ -14,14 +17,42 @@ public class GameEngine {
 	
 	public void startMenu(){
 		
-		GfxEngine.changePanel(new Menu(this));
-		GfxEngine.repaint();
+		renderThreadRunning = false;
+		
+		gfxEngine.changePanel(new Menu(this));
+		gfxEngine.repaint();
 		
 	}
 	
 	public void startLevel(){
 		
+		level = new Level(this);
+		gfxEngine.changePanel(level);
+		gfxEngine.repaint();
 		
+		renderThreadRunning = true;
+		renderThread = new Thread(this);
+		renderThread.start();
+		
+	}
+
+	@Override
+	public void run() {
+		
+		long time = System.currentTimeMillis();
+		double fps;
+		
+		while(renderThreadRunning){
+			
+			if(level != null){
+				
+				level.render();
+				
+			}
+			
+			gfxEngine.repaint();
+			
+		}
 		
 	}
 	
