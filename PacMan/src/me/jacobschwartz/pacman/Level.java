@@ -47,7 +47,7 @@ public class Level extends JPanel{
 		1,1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1,1,
 		1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,
 		1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,2,1,
-		1,3,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,3,1,
+		1,3,2,2,1,2,2,2,2,2,0,2,2,2,2,2,1,2,2,3,1,
 		1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,
 		1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,
 		1,2,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,2,1,
@@ -79,6 +79,7 @@ public class Level extends JPanel{
 	public void buildBoard(){
 		
 		Wall wall;
+		Cheese cheese;
 		
 		for(int i = 0; i < levelData.length; i++){
 			
@@ -89,7 +90,39 @@ public class Level extends JPanel{
 					paintList.add(wall);
 					break;
 				case 2:
-					
+					cheese = new Cheese(i-((i/21)*21),i/21, false, this);
+					collisionList.add(cheese);
+					paintList.add(cheese);
+					break;
+				case 3:
+					cheese = new Cheese(i-((i/21)*21),i/21, true, this);
+					collisionList.add(cheese);
+					paintList.add(cheese);
+					break;
+			}
+			
+		}
+		
+	}
+	
+	public void listCleanUp(){
+		
+		for(int i = 0; i < collisionList.size(); i++){
+			
+			if(collisionList.get(i).isDead()){
+				
+				collisionList.remove(i);
+				
+			}
+			
+		}
+		
+		for(int i = 0; i < paintList.size(); i++){
+			
+			if(paintList.get(i).isDead()){
+				
+				paintList.remove(i);
+				
 			}
 			
 		}
@@ -98,6 +131,7 @@ public class Level extends JPanel{
 	
 	public void render(){
 		
+		listCleanUp();
 		handleKeys();
 		
 	}
