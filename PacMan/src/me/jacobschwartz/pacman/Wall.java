@@ -29,15 +29,21 @@ public class Wall implements Collideable, Paintable {
 	}
 
 	@Override
-	public boolean onCollide() {
+	public void handleCollision(Rectangle rect) {
 		
-		return true;
+		
 	}
 
 	@Override
 	public boolean isDead() {
 		
 		return false;
+	}
+
+	@Override
+	public boolean isSolidColliding(Rectangle rect) {
+
+		return collisionbox.intersects(rect) ? true : false;
 	}
 
 }

@@ -46,20 +46,25 @@ public class Cheese implements Collideable, Paintable {
 	}
 
 	@Override
-	public boolean onCollide() {
+	public void handleCollision(Rectangle rect) {
 		
-		System.out.println("colliding");
+		if(collisionbox.intersects(rect)){
+			level.addPoints(points);
+			isDead = true;
+		}
 		
-		level.addPoints(points);
-		isDead = true;
-		
-		return false;
 	}
 
 	@Override
 	public boolean isDead() {
 		
 		return isDead;
+	}
+
+	@Override
+	public boolean isSolidColliding(Rectangle rect) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -3,6 +3,7 @@ package me.jacobschwartz.pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Level extends JPanel{
 	
 	private List<Collideable> collisionList = new ArrayList<Collideable>();
 	private List<Paintable> paintList = new ArrayList<Paintable>();
+	private PacMan pacman;
 	
 	private int points = 0;
 	public void addPoints(int points){ this.points += points; }
@@ -26,7 +28,8 @@ public class Level extends JPanel{
 	//1 = wall
 	//2 = cheese
 	//3 = Big Cheese
-	private final short levelData[] = {
+	//4 = PacMan
+	private final byte levelData[] = {
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 		1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,
 		1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,2,1,
@@ -47,7 +50,7 @@ public class Level extends JPanel{
 		1,1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1,1,
 		1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,
 		1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,2,1,
-		1,3,2,2,1,2,2,2,2,2,0,2,2,2,2,2,1,2,2,3,1,
+		1,3,2,2,1,2,2,2,2,2,4,2,2,2,2,2,1,2,2,3,1,
 		1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,
 		1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,
 		1,2,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,2,1,
@@ -71,6 +74,22 @@ public class Level extends JPanel{
 		switch(keyListener.getCurrentKeyCode()){
 			case KeyEvent.VK_ESCAPE:
 				gameEngine.startMenu();
+				break;
+			case KeyEvent.VK_W:
+			case KeyEvent.VK_UP:
+				pacman.setNewDirection(0);
+				break;
+			case KeyEvent.VK_D:
+			case KeyEvent.VK_RIGHT:
+				pacman.setNewDirection(1);
+				break;
+			case KeyEvent.VK_S:
+			case KeyEvent.VK_DOWN:
+				pacman.setNewDirection(2);
+				break;
+			case KeyEvent.VK_A:
+			case KeyEvent.VK_LEFT:
+				pacman.setNewDirection(3);
 				break;
 		}
 		
@@ -98,6 +117,10 @@ public class Level extends JPanel{
 					cheese = new Cheese(i-((i/21)*21),i/21, true, this);
 					collisionList.add(cheese);
 					paintList.add(cheese);
+					break;
+				case 4:
+					pacman = new PacMan(i-((i/21)*21),i/21, this);
+					paintList.add(pacman);
 					break;
 			}
 			
@@ -129,10 +152,37 @@ public class Level extends JPanel{
 		
 	}
 	
+	public boolean isSolidColliding(Rectangle rect){
+		
+		for(int i = 0; i < collisionList.size(); i++){
+			
+			if(collisionList.get(i).isSolidColliding(rect)){
+				
+				return true;
+				
+			}
+			
+		}
+		
+		return false;
+		
+	}
+	
+	public void handleCollision(Rectangle rect){
+		
+		for(int i = 0; i < collisionList.size(); i++){
+			
+			collisionList.get(i).handleCollision(rect);
+			
+		}
+		
+	}
+	
 	public void render(){
 		
 		listCleanUp();
 		handleKeys();
+		pacman.render();
 		
 	}
 	

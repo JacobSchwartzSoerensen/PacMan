@@ -39,9 +39,6 @@ public class GameEngine implements Runnable{
 	@Override
 	public void run() {
 		
-		long time = System.currentTimeMillis();
-		double fps;
-		
 		while(renderThreadRunning){
 			
 			if(level != null){
@@ -51,6 +48,13 @@ public class GameEngine implements Runnable{
 			}
 			
 			gfxEngine.repaint();
+			
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		
