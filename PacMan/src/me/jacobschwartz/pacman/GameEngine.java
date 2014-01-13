@@ -50,7 +50,7 @@ public class GameEngine implements Runnable{
 			gfxEngine.repaint();
 			
 			try {
-				Thread.sleep(2);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

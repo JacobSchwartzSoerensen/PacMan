@@ -12,7 +12,6 @@ public class PacMan implements Paintable{
 	private int currentDirection = 3, newDirection = 3;
 	public void setNewDirection(int dir){ newDirection = dir; }
 	
-	private double distFromBox = 0;
 	private double speed = 60; //pixels per second
 	private long time;
 	private double elapsedTime;
@@ -36,8 +35,6 @@ public class PacMan implements Paintable{
 		
 		elapsedTime = (System.currentTimeMillis() - time)/1000.0;
 		time = System.currentTimeMillis();
-		
-		//System.out.println(newDirection);
 		
 		switch(currentDirection){
 			case 0:
@@ -79,23 +76,16 @@ public class PacMan implements Paintable{
 		
 		if(!level.isSolidColliding(new Rectangle((int)(collisionbox.getX()+(n_moveX*((elapsedTime*speed)+1))), (int)(collisionbox.getY()+(n_moveY*((elapsedTime*speed)+1))), (int)collisionbox.getWidth(), (int)collisionbox.getHeight()))){
 			
-			System.out.println("buh");
-			
 			currentDirection = newDirection;
 			collisionbox.setRect(collisionbox.getX()+(n_moveX*(elapsedTime*speed)), collisionbox.getY()+(n_moveY*(elapsedTime*speed)), collisionbox.getWidth(), collisionbox.getHeight());
 			
 		}else if(!level.isSolidColliding(new Rectangle((int)(collisionbox.getX()+(c_moveX*(elapsedTime*speed))), (int)(collisionbox.getY()+(c_moveY*(elapsedTime*speed))), (int)collisionbox.getWidth(), (int)collisionbox.getHeight()))){
-			
-			System.out.println("bah");
 			
 			collisionbox.setRect(collisionbox.getX()+(c_moveX*(elapsedTime*speed)), collisionbox.getY()+(c_moveY*(elapsedTime*speed)), collisionbox.getWidth(), collisionbox.getHeight());
 			
 		}
 		
 		level.handleCollision(collisionbox.getBounds());
-		
-		System.out.println("C: "+c_moveX + " : " + c_moveY);
-		System.out.println("N: "+n_moveX + " : " + n_moveY);
 		
 	}
 
