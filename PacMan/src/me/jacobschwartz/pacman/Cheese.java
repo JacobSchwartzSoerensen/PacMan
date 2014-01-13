@@ -18,17 +18,19 @@ public class Cheese implements Collideable, Paintable {
 	public Cheese(int x, int y, boolean bonus, Level level){
 		
 		if(bonus){
-			collisionbox.x = (x*20)+2;
-			collisionbox.y = (y*20)+2;
-			collisionbox.width = 16;
-			collisionbox.height = 16;
+			collisionbox.x = (x*20)+4;
+			collisionbox.y = (y*20)+4;
+			collisionbox.width = 12;
+			collisionbox.height = 12;
 			color = new Color(255,205,0);
+			points = 50;
 		}else{
-			collisionbox.x = (x*20)+5;
-			collisionbox.y = (y*20)+5;
-			collisionbox.width = 10;
-			collisionbox.height = 10;
+			collisionbox.x = (x*20)+8;
+			collisionbox.y = (y*20)+8;
+			collisionbox.width = 4;
+			collisionbox.height = 4;
 			color = new Color(255,255,0);
+			points = 10;
 		}
 		
 		bonusCheese = bonus;

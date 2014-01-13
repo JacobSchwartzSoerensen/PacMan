@@ -33,8 +33,11 @@ public class PacMan implements Paintable{
 	
 	public void render(){
 		
+		//Calculating the time since last run
 		elapsedTime = (System.currentTimeMillis() - time)/1000.0;
 		time = System.currentTimeMillis();
+		
+		//Translating directions to positive and negative x and y directions
 		
 		switch(currentDirection){
 			case 0:
@@ -74,6 +77,7 @@ public class PacMan implements Paintable{
 				break;
 		}
 		
+		//If there is clear space in new direction, change direction, else keep old direction if that is clear. If both are blocked, stop.
 		if(!level.isSolidColliding(new Rectangle((int)(collisionbox.getX()+(n_moveX*((elapsedTime*speed)+1))), (int)(collisionbox.getY()+(n_moveY*((elapsedTime*speed)+1))), (int)collisionbox.getWidth(), (int)collisionbox.getHeight()))){
 			
 			currentDirection = newDirection;
@@ -85,13 +89,14 @@ public class PacMan implements Paintable{
 			
 		}
 		
+		//Handling collisions with non-solid objects
 		level.handleCollision(collisionbox.getBounds());
 		
 	}
 
 	@Override
 	public boolean isDead() {
-		// TODO Auto-generated method stub
+		//Tells the list manager whether to remove this object
 		return false;
 	}
 

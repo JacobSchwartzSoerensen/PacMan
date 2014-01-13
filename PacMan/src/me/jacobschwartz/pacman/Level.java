@@ -202,6 +202,9 @@ public class Level extends JPanel{
 			
 		}
 		
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("Points: "+points, 500, 100);
+		
 		
 	}
 	
