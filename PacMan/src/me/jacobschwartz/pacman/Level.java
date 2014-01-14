@@ -3,6 +3,7 @@ package me.jacobschwartz.pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
@@ -19,43 +20,50 @@ public class Level extends JPanel{
 	
 	private List<Collideable> collisionList = new ArrayList<Collideable>();
 	private List<Paintable> paintList = new ArrayList<Paintable>();
+	private List<Intersection> intersectionList = new ArrayList<Intersection>();
 	private PacMan pacman;
+	private Ghost ghost;
 	
 	private int points = 0;
 	public void addPoints(int points){ this.points += points; }
+	public Point getPacManPos(){ return new Point(pacman.getX(), pacman.getY()); }
 	
 	//0 = empty
 	//1 = wall
 	//2 = cheese
 	//3 = Big Cheese
 	//4 = PacMan
+	//5 = Intersection
+	//6 = Intersection + cheese
+	//7 = Intersection + big cheese
+	//8 = Ghost
 	private final byte levelData[] = {
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,
+		1,6,2,2,2,6,2,2,2,6,1,6,2,2,2,6,2,2,2,6,1,
 		1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,2,1,
 		1,3,1,0,1,2,1,0,1,2,1,2,1,0,1,2,1,0,1,3,1,
 		1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,2,1,
-		1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+		1,6,2,2,2,6,2,6,2,6,2,6,2,6,2,6,2,2,2,6,1,
 		1,2,1,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,1,2,1,
 		1,2,1,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,1,2,1,
-		1,2,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,2,1,
+		1,6,2,2,2,6,1,6,2,6,1,6,2,6,1,6,2,2,2,6,1,
 		1,1,1,1,1,2,1,1,1,0,1,0,1,1,1,2,1,1,1,1,1,
-		0,0,0,0,1,2,1,0,0,0,0,0,0,0,1,2,1,0,0,0,0,
+		0,0,0,0,1,2,1,5,0,5,5,5,0,5,1,2,1,0,0,0,0,
 		0,0,0,0,1,2,1,0,1,0,0,0,1,0,1,2,1,0,0,0,0,
-		1,1,1,1,1,2,1,0,1,0,0,0,1,0,1,2,1,1,1,1,1,
-		0,0,0,0,0,2,0,0,1,0,0,0,1,0,0,2,0,0,0,0,0,
+		1,1,1,1,1,2,1,0,1,0,8,0,1,0,1,2,1,1,1,1,1,
+		0,0,0,0,0,6,0,5,1,5,5,5,1,5,0,6,0,0,0,0,0,
 		1,1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1,1,
-		0,0,0,0,1,2,1,0,0,0,0,0,0,0,1,2,1,0,0,0,0,
+		0,0,0,0,1,2,1,5,0,0,0,0,0,5,1,2,1,0,0,0,0,
 		0,0,0,0,1,2,1,0,1,1,1,1,1,0,1,2,1,0,0,0,0,
 		1,1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1,1,
-		1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,
+		1,6,2,2,2,6,2,6,2,6,1,6,2,6,2,6,2,2,2,6,1,
 		1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,2,1,
-		1,3,2,2,1,2,2,2,2,2,4,2,2,2,2,2,1,2,2,3,1,
+		1,7,2,6,1,6,2,6,2,6,4,6,2,6,2,6,1,6,2,7,1,
 		1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,
 		1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,
-		1,2,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,2,1,
+		1,6,2,6,2,6,1,6,2,6,1,6,2,6,1,6,2,6,2,6,1,
 		1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1,
-		1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+		1,6,2,2,2,2,2,2,2,6,2,6,2,2,2,2,2,2,2,6,1,
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 	};
 	
@@ -99,6 +107,7 @@ public class Level extends JPanel{
 		
 		Wall wall;
 		Cheese cheese;
+		Intersection intersection;
 		
 		for(int i = 0; i < levelData.length; i++){
 			
@@ -121,6 +130,32 @@ public class Level extends JPanel{
 				case 4:
 					pacman = new PacMan(i-((i/21)*21),i/21, this);
 					paintList.add(pacman);
+					break;
+				case 5:
+					intersection = new Intersection(i-((i/21)*21),i/21);
+					intersectionList.add(intersection);
+					paintList.add(intersection);
+					break;
+				case 6:
+					intersection = new Intersection(i-((i/21)*21),i/21);
+					intersectionList.add(intersection);
+					paintList.add(intersection);
+					cheese = new Cheese(i-((i/21)*21),i/21, false, this);
+					collisionList.add(cheese);
+					paintList.add(cheese);
+					break;
+				case 7:
+					intersection = new Intersection(i-((i/21)*21),i/21);
+					intersectionList.add(intersection);
+					paintList.add(intersection);
+					cheese = new Cheese(i-((i/21)*21),i/21, true, this);
+					collisionList.add(cheese);
+					paintList.add(cheese);
+					break;
+				case 8:
+					ghost = new Ghost(i-((i/21)*21),i/21, this);
+					collisionList.add(ghost);
+					paintList.add(ghost);
 					break;
 			}
 			
@@ -178,11 +213,28 @@ public class Level extends JPanel{
 		
 	}
 	
+	public boolean isAtIntersection(Rectangle rect){
+		
+		for(int i = 0; i < intersectionList.size(); i++){
+			
+			if(intersectionList.get(i).isColliding(rect)){
+				
+				return true;
+				
+			}
+			
+		}
+		
+		return false;
+		
+	}
+	
 	public void render(){
 		
 		listCleanUp();
 		handleKeys();
 		pacman.render();
+		ghost.render();
 		
 	}
 	

@@ -20,6 +20,9 @@ public class PacMan implements Paintable{
 	private Rectangle2D collisionbox = new Rectangle2D.Double();
 	private Color color = new Color(255,150,0);
 	
+	public int getX(){ return (int)collisionbox.getX(); }
+	public int getY(){ return (int)collisionbox.getY(); }
+	
 	
 	public PacMan(int x, int y, Level level){
 		
