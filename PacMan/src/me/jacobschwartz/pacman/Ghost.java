@@ -119,12 +119,12 @@ public class Ghost implements Paintable, Collideable{
 			System.out.println("-------------------------------------");
 			
 			//Testing if the new direction is free space, and calculate the distance at the new position
-			//If the calculated distance is lower than the previous one, it will select that direction until a lower result is found
+			//If the calculated distance is lower than the previous ones, it will select that direction until a lower result is found
 			if(!level.isSolidColliding(new Rectangle((int)(collisionbox.getX()+(n_moveX1*20)), (int)(collisionbox.getY()+(n_moveY1*20)), (int)collisionbox.getWidth(), (int)collisionbox.getHeight()))){
 				
 				newX = (int)(collisionbox.getX()+(n_moveX1*20));
 				newY = (int)(collisionbox.getY()+(n_moveY1*20));
-				dist1 = (int)Math.abs(Math.sqrt(Math.pow(level.getPacManPos().y-newY, 2)+Math.pow(level.getPacManPos().x-newX, 2)));
+				dist1 = (int)Math.abs(Math.sqrt(Math.pow(level.getPacManY()-newY, 2)+Math.pow(level.getPacManX()-newX, 2)));
 				
 				System.out.println("Dist1: "+dist1);
 				
@@ -155,7 +155,7 @@ public class Ghost implements Paintable, Collideable{
 				
 				newX = (int)(collisionbox.getX()+(n_moveX2*20));
 				newY = (int)(collisionbox.getY()+(n_moveY2*20));
-				dist2 = (int)Math.abs(Math.sqrt(Math.pow(level.getPacManPos().y-newY, 2)+Math.pow(level.getPacManPos().x-newX, 2)));
+				dist2 = (int)Math.abs(Math.sqrt(Math.pow(level.getPacManY()-newY, 2)+Math.pow(level.getPacManX()-newX, 2)));
 				
 				System.out.println("Dist2: "+dist2);
 				
@@ -191,7 +191,7 @@ public class Ghost implements Paintable, Collideable{
 				
 				newX = (int)(collisionbox.getX()+(n_moveX3*20));
 				newY = (int)(collisionbox.getY()+(n_moveY3*20));
-				dist3 = (int)Math.abs(Math.sqrt(Math.pow(level.getPacManPos().y-newY, 2)+Math.pow(level.getPacManPos().x-newX, 2)));
+				dist3 = (int)Math.abs(Math.sqrt(Math.pow(level.getPacManY()-newY, 2)+Math.pow(level.getPacManX()-newX, 2)));
 				
 				System.out.println("Dist3: "+dist3);
 				
@@ -236,7 +236,7 @@ public class Ghost implements Paintable, Collideable{
 	
 	@Override
 	public void handleCollision(Rectangle rect) {
-		// TODO Auto-generated method stub
+		// TODO At collision detection to kill PacMan or get killed by him
 		
 	}
 

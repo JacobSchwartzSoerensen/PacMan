@@ -26,7 +26,8 @@ public class Level extends JPanel{
 	
 	private int points = 0;
 	public void addPoints(int points){ this.points += points; }
-	public Point getPacManPos(){ return new Point(pacman.getX(), pacman.getY()); }
+	public int getPacManX(){ return pacman.getX(); }
+	public int getPacManY(){ return pacman.getY(); }
 	
 	//0 = empty
 	//1 = wall
